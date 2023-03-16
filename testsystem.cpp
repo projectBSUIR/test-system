@@ -44,7 +44,7 @@ void TestSystem::InputCycle()
         }
         else if(command=="available?")
         {
-            cout<<IsThreadAvailable();
+            cout<<IsThreadAvailable()<<"\n";
         }
         else if(command=="startTestThread")
         {
