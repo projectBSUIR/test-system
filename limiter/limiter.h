@@ -3,13 +3,14 @@
 #ifndef LIMITER_LIMITER_H
 #define LIMITER_LIMITER_H
 
-class limiter{
+class Limiter{
 private:
-    static pthread_t thread_pointer;
+    static pthread_t threadPointer;
 public:
-    static void* limiter_loop(void* arg);
-    static bool check_time_limit();
-    static bool check_memory_limit();
+    static void* limiterLoop(void* argument);
+    static void startLimiterThread();
+    static bool checkTimeLimit();
+    static bool checkMemoryLimit();
 };
 
 #endif 
