@@ -9,10 +9,8 @@
 #include "testsystem/testsystem.h"
 #include "threaddatamanager/threaddatamanager.h"
 
-void TestSystem::terminateThread(int index)
+void TestSystem::terminateProcess(int index,int errorCode)
 {
-    pthread_cancel(*ThreadDataManager::getThreadPointer(index));
-    ThreadDataManager::setThreadStatus(index,0);
     ThreadDataManager::getThreadChildPointer(index)->terminate();
-    ThreadDataManager::setThreadChildPointer(index,nullptr);
+    ThreadDataManager::setThreadErrorCode(index,errorCode);
 }

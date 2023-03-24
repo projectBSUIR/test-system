@@ -9,6 +9,7 @@ public:
     static void inputLoop();
     static void* limiterLoop(void* argument);
     static void terminateThread(int ind);
+    static void terminateProcess(int ind,int errorCode);
 };
 
 #endif

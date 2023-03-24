@@ -4,6 +4,7 @@
 
 #include "testsystem/testsystem.h"
 #include "threaddatamanager/threaddatamanager.h"
+#include "testcode/testcode.h"
 
 void TestSystem::inputLoop(){
     std::string command;
@@ -14,6 +15,15 @@ void TestSystem::inputLoop(){
         }
         else if(command=="available?"){
             std::cout<<(ThreadDataManager::getAvailableThread()==-1)<<"\n";
+        }
+        //
+        else if(command=="testThreadThing"){
+            startTestThreadRight();
+            startTestThreadRight();
+            startTestThreadRight();
+            startTestThreadRight();
+            startTestThreadRight();
+            startTestThreadRight();
         }
     }
 }

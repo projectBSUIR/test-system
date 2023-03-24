@@ -4,10 +4,10 @@
 #include "limiter/limiter.h"
 #include "threaddatamanager/threaddatamanager.h"
 
-bool Limiter::checkTimeLimit(int index){
+bool Limiter::checkTimeLimitCompilation(int index){
     if(std::chrono::steady_clock::now()
         -ThreadDataManager::getThreadTime(index)>
-        std::chrono::milliseconds(ThreadDataManager::getThreadTimeLimit(index))){
+        std::chrono::milliseconds(ThreadDataManager::COMPILATION_TIME_LIMIT)){
         return false;
     }
     return true;
