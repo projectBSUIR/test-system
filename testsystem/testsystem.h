@@ -7,9 +7,11 @@
 class TestSystem{
 public:
     static void inputLoop();
-    static void* limiterLoop(void* argument);
     static void terminateThread(int ind);
     static void terminateProcess(int ind,int errorCode);
+    static void createBaseFolders();
+    static void startTestRoutine(int ind);
+    static void* TestRoutine(void* arg);
 };
 
 #endif

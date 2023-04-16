@@ -2,8 +2,12 @@
 
 #include "threaddatamanager/threaddatamanager.h"
 
+int ThreadDataManager::threadTestQuantity[6]{};
+
 int ThreadDataManager::threadErrorCodes[6]{};
 
+//0 - free, 1 - accupied, 2 - compiling solution
+//3 - running solution
 int ThreadDataManager::threadStatuses[6]{};
 
 pthread_t ThreadDataManager::threadPointers[6]{};
@@ -22,4 +26,4 @@ const double ThreadDataManager::COMPILATION_MEMORY_LIMIT=256000;
 //in milliseconds
 const int ThreadDataManager::COMPILATION_TIME_LIMIT=45000;
 
-const std::string ThreadDataManager::TEST_FILES_PATH="/home/emind/TestSystemStuff/TestSystem/testfiles";
+const std::string ThreadDataManager::MAIN_FOLDER_NAME="TestSystemData";

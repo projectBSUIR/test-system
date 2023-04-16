@@ -4,7 +4,6 @@
 
 #include "testsystem/testsystem.h"
 #include "threaddatamanager/threaddatamanager.h"
-#include "testcode/testcode.h"
 
 void TestSystem::inputLoop(){
     std::string command;
@@ -17,13 +16,37 @@ void TestSystem::inputLoop(){
             std::cout<<(ThreadDataManager::getAvailableThread()==-1)<<"\n";
         }
         //
-        else if(command=="testThreadThing"){
-            startTestThreadRight();
-            startTestThreadRight();
-            startTestThreadRight();
-            startTestThreadRight();
-            startTestThreadRight();
-            startTestThreadRight();
+        else if(command=="testThreadThing3"){
+            int a=ThreadDataManager::getAvailableThread();
+            if(a!=-1){
+                startTestRoutine(a);
+            }
+            a=ThreadDataManager::getAvailableThread();
+            if(a!=-1){
+                startTestRoutine(a);
+            }
+            a=ThreadDataManager::getAvailableThread();
+            if(a!=-1){
+                startTestRoutine(a);
+            }
+        }
+        else if(command=="testThreadThing1"){
+            int a=ThreadDataManager::getAvailableThread();
+            if(a!=-1){
+                startTestRoutine(a);
+            }
+        }
+        else if(command=="testThreadThing2"){
+            int a=ThreadDataManager::getAvailableThread();
+            if(a!=-1){
+                startTestRoutine(1);
+            }
+        }
+        else if(command=="testThreadThing4"){
+            int a=ThreadDataManager::getAvailableThread();
+            if(a!=-1){
+                startTestRoutine(3);
+            }
         }
     }
 }

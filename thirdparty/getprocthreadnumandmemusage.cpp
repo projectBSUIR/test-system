@@ -6,9 +6,9 @@
 #include <string>
 #include <pthread.h>
 
-#include "thirdparty/processmemusage.h"
+#include "thirdparty/getprocthreadnumandmemusage.h"
 
-void processMemUsage(double& vmUsage, double& residentSet,pid_t pid){
+void getProcThreadNumAndMemUsage(int& threadNum,double& vmUsage, double& residentSet,pid_t pid){
    vmUsage     = 0.0;
    residentSet = 0.0;
    std::string path="/proc/"+std::to_string(pid)+"/stat";
@@ -19,7 +19,11 @@ void processMemUsage(double& vmUsage, double& residentSet,pid_t pid){
    unsigned long vsize=0;
    long rss=0;
 
-    for(int i=0;i<22;i++){
+    for(int i=0;i<19;i++){
+        stat_stream>>dummy;
+    }
+    stat_stream >> threadNum;
+    for(int i=0;i<2;i++){
         stat_stream>>dummy;
     }
     stat_stream>>vsize;

@@ -9,6 +9,7 @@
 class ThreadDataManager{
 
 private:
+    static int threadTestQuantity[6];
     static int threadErrorCodes[6];
     static int threadStatuses[6];
     static pthread_t threadPointers[6];
@@ -18,11 +19,12 @@ private:
     static std::chrono::time_point<std::chrono::steady_clock> threadTimes[6];
 
 public:
-    static const std::string TEST_FILES_PATH;
+    static const std::string MAIN_FOLDER_NAME;
     static const double COMPILATION_MEMORY_LIMIT;
     static const int COMPILATION_TIME_LIMIT;
 
     static int getAvailableThread();
+    static int getThreadTestQuantity(int index);
     static int getThreadStatus(int index);
     static pthread_t* getThreadPointer(int index);
     static std::chrono::time_point<std::chrono::steady_clock> getThreadTime(int index);
@@ -31,6 +33,7 @@ public:
     static boost::process::child* getThreadChildPointer(int index);
     static int getThreadErrorCode(int index);
 
+    static void setThreadTestQuantity(int index, int quantity);
     static void setThreadStatus(int index,int newStatus);
     static void setThreadTime(int index, std::chrono::time_point<std::chrono::steady_clock> newTime);
     static void setThreadTimeLimit(int index, int newLimit);

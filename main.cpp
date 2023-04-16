@@ -6,6 +6,7 @@
 
 int main()
 {
+    TestSystem::createBaseFolders();
     Limiter::startLimiterThread();
     TestSystem::inputLoop();
     return 0;
