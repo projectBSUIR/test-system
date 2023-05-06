@@ -1,5 +1,3 @@
-#include <pthread.h>
-
 #include "threaddatamanager/threaddatamanager.h"
 
 pthread_t* ThreadDataManager::getThreadPointer(int index){

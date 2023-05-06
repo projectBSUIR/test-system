@@ -1,14 +1,22 @@
-#include <chrono>
-#include <iostream>
-
 #include "limiter/limiter.h"
 #include "threaddatamanager/threaddatamanager.h"
 
 bool Limiter::checkTimeLimitCompilation(int index){
-    if(std::chrono::steady_clock::now()
-        -ThreadDataManager::getThreadTime(index)>
-        std::chrono::milliseconds(ThreadDataManager::COMPILATION_TIME_LIMIT)){
-        return false;
-    }
-    return true;
+    std::string path = "/sys/fs/cgroup/testsystemcomp";
+    path += (char)(index + 48);
+    path += "/cpu.stat";
+
+    long long time;
+
+    std::ifstream file(path.c_str());
+    do{
+        file >> path;
+    }while(path != "usage_usec");
+    file >> time;
+    file.close();
+
+    if(!ThreadDataManager::getThreadErrorCode(index))
+        ThreadDataManager::setThreadTotalTime(index, time / 1000);
+    
+    return (time / 1000) < ThreadDataManager::COMPILATION_TIME_LIMIT;
 }

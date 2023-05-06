@@ -1,27 +1,34 @@
-#include <string>
-#include <iostream>
-#include <unistd.h>
-#include <boost/process.hpp>
-#include <boost/process/io.hpp>
-
 #include "testsystem/testsystem.h"
 #include "threaddatamanager/threaddatamanager.h"
 
 void TestSystem::createBaseFolders(){
-    boost::process::system("mkdir -m 755 -p "+ThreadDataManager::MAIN_FOLDER_NAME);
-    for(int i=0;i<6;i++){
-        boost::process::system("mkdir -m 755 -p ./"+
-            ThreadDataManager::MAIN_FOLDER_NAME+"/ThreadData"+(char)(i+48));
-        boost::process::system("cp -R ./testlib.h ./"+
-            ThreadDataManager::MAIN_FOLDER_NAME+"/ThreadData"+(char)(i+48));
-        boost::process::system("mkdir -m 755 -p ./"+
-            ThreadDataManager::MAIN_FOLDER_NAME+"/ThreadRoot"+(char)(i+48));
-        boost::process::system("cp -R ./lib ./"+ThreadDataManager::MAIN_FOLDER_NAME+"/ThreadRoot"+(char)(i+48));
-        boost::process::system("cp -R ./lib64 ./"+
-            ThreadDataManager::MAIN_FOLDER_NAME+"/ThreadRoot"+(char)(i+48));
-        boost::process::system("chmod 755 ./"+
-            ThreadDataManager::MAIN_FOLDER_NAME+"/ThreadRoot"+(char)(i+48)+"/lib");
-        boost::process::system("chmod 755 ./"+
-            ThreadDataManager::MAIN_FOLDER_NAME+"/ThreadRoot"+(char)(i+48)+"/lib64");
+    system("mkdir -m 755 -p ./TestSystemData > /dev/null");
+    std::string command;
+    for(int i = 0; i < ThreadDataManager::getMaximumThreadCount();
+        i++){
+        command ="mkdir -m 755 -p ./TestSystemData/ThreadData";
+        command += char(i + 48);
+        command += " > /dev/null";
+        system(command.c_str());
+
+        command = "cp -R ./testlib.h ./TestSystemData/ThreadData";
+        command += char(i + 48);
+        command += " > /dev/null";
+        system(command.c_str());
+
+        command = "mkdir -m 755 -p ./TestSystemData/ThreadRoot";
+        command += char(i + 48);
+        command += " > /dev/null";
+        system(command.c_str());
+
+        command = "mkdir -m 755 -p ./TestSystemData/ThreadRoot";
+        command += char(i + 48);
+        command += "/lib > /dev/null";
+        system(command.c_str());
+
+        command = "mkdir -m 755 -p ./TestSystemData/ThreadRoot";
+        command += char(i + 48);
+        command += "/lib64 > /dev/null";
+        system(command.c_str());
     }
 }

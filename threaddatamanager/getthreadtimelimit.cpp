@@ -1,5 +1,5 @@
 #include "threaddatamanager/threaddatamanager.h"
 
-int ThreadDataManager::getThreadTimeLimit(int index){
+long ThreadDataManager::getThreadTimeLimit(int index){
     return threadTimeLimits[index];
 }

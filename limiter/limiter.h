@@ -1,7 +1,10 @@
-#include <pthread.h>
-
 #ifndef LIMITER_LIMITER_H
 #define LIMITER_LIMITER_H
+
+#include <pthread.h>
+#include <unistd.h>
+#include <fstream>
+#include <iostream>
 
 class Limiter{
 private:
@@ -10,10 +13,9 @@ public:
     static void* limiterLoop(void* argument);
     static void startLimiterThread();
     static bool checkTimeLimit(int index);
-    static bool checkMemoryLimit(int index, double memory);
+    static bool checkMemoryLimit(int index);
     static bool checkTimeLimitCompilation(int index);
-    static bool checkMemoryLimitCompilation(int index, double memory);
-    static bool checkThreadLimit(int threadCount);
+    static bool checkMemoryLimitCompilation(int index);
 };
 
 #endif 

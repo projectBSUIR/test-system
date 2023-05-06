@@ -1,55 +1,46 @@
-#include <unistd.h>
-#include <chrono>
-#include <iostream>
-
 #include "threaddatamanager/threaddatamanager.h"
 #include "limiter/limiter.h"
 #include "testsystem/testsystem.h"
-#include "thirdparty/getprocthreadnumandmemusage.h"
 
-//old
 void* Limiter::limiterLoop(void * argument){
-    int i=0;
-    double virtualMemory=0;
-    double residentSet=0;
-    int threadCount=0;
+    int i = 0;
+    std::string cgroupPathSolution = "/sys/fs/cgroup/testsystem";
+    std::string cgroupPathCompilation = "/sys/fs/cgroup/testsystemcomp";
+    std::string tempString;
     while (true){
-        for(i=0;i<6;i++){
-            if(!ThreadDataManager::getThreadStatus(i)||
-                ThreadDataManager::getThreadChildPointer(i)==nullptr){
+        for(i = 0;i < ThreadDataManager::getMaximumThreadCount(); i++){
+            if(!ThreadDataManager::getThreadStatus(i) ||
+                ThreadDataManager::getThreadExecPid(i) == -1){
                 continue;
             }
-            else if(ThreadDataManager::getThreadStatus(i)==2)
-            {
+            else if(ThreadDataManager::getThreadStatus(i) == 2)
+            {   
                 if(!checkTimeLimitCompilation(i)){
-                    TestSystem::terminateProcess(i,3);
+                    tempString = cgroupPathCompilation + (char)(i + 48);
+                    tempString += "/cgroup.procs";
+                    TestSystem::terminateProcess(i, 1003, tempString);
                     continue;
                 }
 
-                getProcThreadNumAndMemUsage(threadCount,virtualMemory,
-                    residentSet,ThreadDataManager::getThreadChildPointer(i)->id());
-
-                if(!checkMemoryLimitCompilation(i,virtualMemory)){
-                    TestSystem::terminateProcess(i,4);
+                if(!checkMemoryLimitCompilation(i)){
+                    tempString = cgroupPathCompilation + (char)(i + 48);
+                    tempString += "/cgroup.procs";
+                    TestSystem::terminateProcess(i, 1002, tempString);
                     continue;
                 }
             }
-            else if(ThreadDataManager::getThreadStatus(i)==3){
+            else if(ThreadDataManager::getThreadStatus(i) == 3){
+                
                 if(!checkTimeLimit(i)){
-                    TestSystem::terminateProcess(i,1);
+                    tempString = cgroupPathSolution + (char)(i + 48);
+                    tempString += "/cgroup.procs";
+                    TestSystem::terminateProcess(i, 1006, tempString);
                     continue;
                 }
-
-                getProcThreadNumAndMemUsage(threadCount,virtualMemory,
-                    residentSet,ThreadDataManager::getThreadChildPointer(i)->id());
-
-                if(!checkMemoryLimit(i,virtualMemory)){
-                    TestSystem::terminateProcess(i,2);
-                    continue;
-                }
-
-                if(!checkThreadLimit(threadCount)){
-                    TestSystem::terminateProcess(i,5);
+                if(!checkMemoryLimit(i)){
+                    tempString = cgroupPathSolution + (char)(i + 48);
+                    tempString += "/cgroup.procs";
+                    TestSystem::terminateProcess(i, 1005, tempString);
                     continue;
                 }
             }

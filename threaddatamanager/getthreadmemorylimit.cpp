@@ -1,5 +1,5 @@
 #include "threaddatamanager/threaddatamanager.h"
 
-double ThreadDataManager::getThreadMemoryLimit(int index){
+long ThreadDataManager::getThreadMemoryLimit(int index){
     return threadMemoryLimits[index];
 }

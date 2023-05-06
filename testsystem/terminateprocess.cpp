@@ -1,16 +1,10 @@
-#include <string>
-#include <iostream>
-#include <unistd.h>
-#include <sys/types.h>
-#include <signal.h>
-#include <sys/wait.h>
-#include <boost/process.hpp>
-
 #include "testsystem/testsystem.h"
 #include "threaddatamanager/threaddatamanager.h"
 
-void TestSystem::terminateProcess(int index,int errorCode)
-{
-    ThreadDataManager::getThreadChildPointer(index)->terminate();
-    ThreadDataManager::setThreadErrorCode(index,errorCode);
+void TestSystem::terminateProcess(int index, int errorCode,
+    std::string& cgroupPath){
+    if(!ThreadDataManager::getThreadErrorCode(index)){
+        kill(ThreadDataManager::getThreadExecPid(index), SIGKILL);
+    }  
+    ThreadDataManager::setThreadErrorCode(index, errorCode);
 }
