@@ -23,7 +23,7 @@ public:
     static void inputLoop();
 
     static void terminateThread(int ind);
-    static void terminateProcess(int ind,int errorCode,std::string&);
+    static void terminateProcess(int ind, int errorCode, std::string&);
 
     static void startTestRoutine(int ind);
     static void* testRoutine(void* arg);
@@ -33,23 +33,23 @@ public:
     static int preparedExecution(void* iP);
 
     static void setupUser(int solvePid);
-    static void setupCgroup(int threadIndex,int solvePid);
-    static void setupCgroupComp(int threadIndex,int solvePid);
+    static void setupCgroup(int threadIndex, int solvePid);
+    static void setupCgroupComp(int threadIndex, int solvePid);
 
     static bool compileChecker(int threadIndex);
     static bool compileSolution(int threadIndex);
 
-    static bool checkOutOfMemory(int threadIndex,std::string path);
+    static bool checkOutOfMemory(int threadIndex, std::string path);
    
     static void getTaskInformation(int threadIndex);
     static void prepareReport(int index);
     
     //utility
     static void createBaseFolders();
-    static void clearThreadDirectories(int index,int testNumber);
+    static void clearThreadDirectories(int index, int testNumber);
     static void createInputAndOutputFiles(int index,
-        std::string& inputPath,std::string& outputPath);
-    static void extractArchive(std::string path,int ind);
+        std::string& inputPath, std::string& outputPath);
+    static void extractArchive(std::string path, int ind);
 };
 
 struct InfoPackage{
@@ -58,7 +58,7 @@ struct InfoPackage{
     int threadIndex;
 };
 
-struct CompInfoPackage{
+struct CompilationInfoPackage{
     int pipeSetup[2];
     int threadIndex;
     std::string command;
