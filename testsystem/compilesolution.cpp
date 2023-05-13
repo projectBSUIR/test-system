@@ -42,7 +42,7 @@ bool TestSystem::compileSolution(int threadIndex){
     if(waitpid(compPid, &status, WUNTRACED | __WALL) == -1){
         perror("waitpid comp failed");
     }
-    delete compInfoPackage;
+    delete compilationInfoPackage;
 
     //update thread status
     ThreadDataManager::setThreadExecPid(threadIndex, -1);

@@ -8,8 +8,8 @@ void* TestSystem::testRoutine(void* arg){
     int* a = (int*)arg;
     delete a;
 
-    getTaskInformation(threadIndex);
-
+    getPropertiesAndFiles(threadIndex);
+    
     if(compileChecker(threadIndex) || compileSolution(threadIndex) ||
         testingLoop(threadIndex) || 1){
 

@@ -1,5 +1,6 @@
 #include "testsystem/testsystem.h"
 #include "threaddatamanager/threaddatamanager.h"
+#include "queryhandler/queryhandler.h"
 
 void TestSystem::prepareReport(int index){
     std::cout << "Thread " << index << ", ec = ";
@@ -34,12 +35,13 @@ void TestSystem::prepareReport(int index){
             break;
     }
     
-    std::string verdictJson = "{\"Memory\":"
+    std::string verdict = "{\"memory\":"
     + std::to_string(ThreadDataManager::getThreadTotalMemory(index))
-    + ",\"Status\":\"" + status
-    + "\",\"Time\":" 
+    + ",\"status\":\"" + status
+    + "\",\"time\":" 
     + std::to_string(ThreadDataManager::getThreadTotalTime(index))
     + "}";
 
-    std::cout << verdictJson<<"\n";
+    std::cout << verdict<<"\n";
+    QueryHandler::sendVerdict(verdict, index);
 }

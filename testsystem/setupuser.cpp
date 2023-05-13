@@ -10,12 +10,12 @@ void TestSystem::setupUser(int solvePid){
     file << "65534 65534 1\n";
     file.close();
 
-    tempStr = procPath + "/setgroups";
+    tempString = procPath + "/setgroups";
     file.open(tempString.c_str());
     file << "deny";
     file.close();
 
-    tempStr = procPath + "/gid_map";
+    tempString = procPath + "/gid_map";
     file.open(tempString.c_str());
     file << "0 " << getgid() << " 1\n";
     file << "65534 65534 1\n";

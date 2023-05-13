@@ -1,5 +1,9 @@
 #include "queryhandler/queryhandler.h"
 
 void QueryHandler::startQueryHandlerThread(){
-    curl_global_init(CURL_GLOBAL_DEFAULT);
+    int ret =  pthread_create(&threadPointer, NULL,
+         &queryHandlerLoop, NULL);
+    if(ret){
+        std::cout << "Failed to create a thread!\n";
+    }
 }

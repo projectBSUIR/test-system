@@ -1,6 +1,7 @@
 #ifndef TESTSYSTEM_TESTSYSTEM_H
 #define TESTSYSTEM_TESTSYSTEM_H
 
+#include <vector>
 #include <sys/mount.h>
 #include <sys/resource.h>
 #include <sys/syscall.h>
@@ -12,10 +13,12 @@
 #include <errno.h>
 #include <cstring>
 #include <string>
+#include <sstream>//
 #include <fstream>
 #include <iostream>
 #include <fcntl.h>
 #include <jsoncpp/json/json.h>
+#include <zip.h>
 
 class TestSystem{
 public:
@@ -41,7 +44,7 @@ public:
 
     static bool checkOutOfMemory(int threadIndex, std::string path);
    
-    static void getTaskInformation(int threadIndex);
+    static void getPropertiesAndFiles(int threadIndex);
     static void prepareReport(int index);
     
     //utility

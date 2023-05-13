@@ -10,7 +10,7 @@ class Limiter{
 private:
     static pthread_t threadPointer;
 public:
-    static void* limiterLoop(void* argument);
+    static void* limiterLoop(void* arg);
     static void startLimiterThread();
     static bool checkTimeLimit(int index);
     static bool checkMemoryLimit(int index);

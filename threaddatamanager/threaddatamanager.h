@@ -8,6 +8,7 @@
 class ThreadDataManager{
 
 private:
+    static std::string threadSubmissionInfo[6];
     static int threadTestQuantity[6];
     static int threadErrorCodes[6];
     static int threadStatuses[6];
@@ -35,6 +36,7 @@ public:
     static int getMaximumThreadCount();
     static long getThreadTotalMemory(int index);
     static long getThreadTotalTime(int index);
+    static std::string getThreadSubmissionInfo(int index);
 
     static void setThreadExecPid(int index, int pid);
     static void setThreadTestQuantity(int index, int quantity);
@@ -46,6 +48,7 @@ public:
     static void setMaximumThreadCount(int newValue);
     static void setThreadTotalMemory(int index,long newValue);
     static void setThreadTotalTime(int index, long newValue);
+    static void setThreadSubmissionInfo(int index, std::string newValue);
 };
 
 #endif

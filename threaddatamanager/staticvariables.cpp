@@ -23,3 +23,5 @@ int ThreadDataManager::maximumThreadCount = 5;
 long ThreadDataManager::threadTotalMemory[6]{};
 
 long ThreadDataManager::threadTotalTime[6]{};
+
+std::string ThreadDataManager::threadSubmissionInfo[6]{};
