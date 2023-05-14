@@ -1,14 +1,11 @@
 #include "testsystem/testsystem.h"
-#include "threaddatamanager/threaddatamanager.h"
+#include "datamanager/datamanager.h"
+#include "filemanager/filemanager.h"
 #include "queryhandler/queryhandler.h"
 
 void TestSystem::prepareReport(int index){
-    std::cout << "Thread " << index << ", ec = ";
-    std::cout << ThreadDataManager::getThreadErrorCode(index);
-    std::cout << '\n';
-
     std::string status;
-    switch(ThreadDataManager::getThreadErrorCode(index)){
+    switch(DataManager::getThreadErrorCode(index)){
         case 0:
             status = "OK";
             break;
@@ -36,12 +33,23 @@ void TestSystem::prepareReport(int index){
     }
     
     std::string verdict = "{\"memory\":"
-    + std::to_string(ThreadDataManager::getThreadTotalMemory(index))
+    + std::to_string(DataManager::getThreadTotalMemory(index))
     + ",\"status\":\"" + status
     + "\",\"time\":" 
-    + std::to_string(ThreadDataManager::getThreadTotalTime(index))
+    + std::to_string(DataManager::getThreadTotalTime(index))
     + "}";
 
-    std::cout << verdict<<"\n";
-    QueryHandler::sendVerdict(verdict, index);
+    if(DataManager::isTerminalLogging()){
+        std::cout << "Thread " << index << ", ec = ";
+        std::cout << DataManager::getThreadErrorCode(index);
+        std::cout << '\n';
+        std::cout << "Verdict - " << verdict<<"\n";
+    }
+
+    if(!DataManager::isAutotestMode()){
+        QueryHandler::sendVerdict(verdict, index);
+    }
+    else{
+        FileManager::setAutotestVerdict(status);
+    }
 }

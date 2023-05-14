@@ -13,7 +13,6 @@
 #include <errno.h>
 #include <cstring>
 #include <string>
-#include <sstream>//
 #include <fstream>
 #include <iostream>
 #include <fcntl.h>
@@ -35,24 +34,19 @@ public:
     static int preparedCompilation(void* iP);
     static int preparedExecution(void* iP);
 
-    static void setupUser(int solvePid);
-    static void setupCgroup(int threadIndex, int solvePid);
-    static void setupCgroupComp(int threadIndex, int solvePid);
+    static void setupUser(int solvePid, int index);
+    static void setupCgroupSolution(int threadIndex, int solvePid);
+    static void setupCgroupCompilation(int threadIndex, int solvePid);
+    static void setupCgroupTestsystem(int cpuProc);
 
     static bool compileChecker(int threadIndex);
     static bool compileSolution(int threadIndex);
 
     static bool checkOutOfMemory(int threadIndex, std::string path);
    
-    static void getPropertiesAndFiles(int threadIndex);
     static void prepareReport(int index);
-    
-    //utility
-    static void createBaseFolders();
-    static void clearThreadDirectories(int index, int testNumber);
-    static void createInputAndOutputFiles(int index,
-        std::string& inputPath, std::string& outputPath);
-    static void extractArchive(std::string path, int ind);
+
+    static void autotestSequence();
 };
 
 struct InfoPackage{

@@ -1,7 +1,9 @@
 #include "queryhandler/queryhandler.h"
 #include "datamanager/datamanager.h"
 
-void QueryHandler::sendVerdict(std::string verdict, int threadIndex){
+void QueryHandler::getTestArchive(int threadIndex,
+    std::vector<uint8_t>& archiveVector){
+
     //parse submission info to json
     Json::Value submissionInfoRoot;
     Json::Reader reader;
@@ -9,41 +11,37 @@ void QueryHandler::sendVerdict(std::string verdict, int threadIndex){
         DataManager::getThreadSubmissionInfo(threadIndex),
         submissionInfoRoot);
 
-    //parse verdict
-    Json::Value verdictRoot;
-    reader.parse(
-        verdict,
-        verdictRoot);
-
     //create input json
     Json::Value inputRoot;
     inputRoot["login"] = DataManager::getTestsystemLogin();
     inputRoot["password"] = DataManager::getTestsystemPassword();
-    inputRoot["payload"]["verdict"] = verdictRoot;
-    inputRoot["payload"]["submission_id"] =
+    inputRoot["payload"]["submission_id"] = 
         submissionInfoRoot["submission_id"];
     inputRoot["payload"]["problem_id"] = 
         submissionInfoRoot["problem_id"];
     Json::StyledWriter writer;
     std::string inputJson = writer.write(inputRoot);
 
-    //request
     do{
         http::Request request{DataManager::getServerUrl() + 
-            DataManager::getSetVerdictRout()};
-        const auto response = request.send("POST",
-            inputJson,{{"Content-Type", "application/json"}});
-        if(response.status.code != 200){
+            DataManager::getExtractProblemTestsRout()};
+        auto response = request.send("GET",
+            inputJson,
+            {{"Content-Type", "application/json"}});
+
+        long requestStatus = response.status.code;
+
+        if(requestStatus != 200){
             if(DataManager::isTerminalLogging()){
-                std::cout<< "Set verdict request failed..."<<"\n";
-                std::cout<< std::string(response.body.begin(),
+                std::cout << "Problem tests request failed, trying again...\n";
+                std::cout << std::string(response.body.begin(),
                     response.body.end())<<"\n";
             }
             usleep(3000000);
         }
         else{
+            archiveVector.swap(response.body);
             break;
         }
     }while(true);
 }
-

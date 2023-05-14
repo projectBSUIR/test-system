@@ -1,7 +1,7 @@
 #include "testsystem/testsystem.h"
-#include "threaddatamanager/threaddatamanager.h"
+#include "datamanager/datamanager.h"
 
 void TestSystem::terminateThread(int index){
-    pthread_cancel(*ThreadDataManager::getThreadPointer(index));
-    ThreadDataManager::setThreadStatus(index, 0);
+    pthread_cancel(*DataManager::getThreadPointer(index));
+    DataManager::setThreadStatus(index, 0);
 }

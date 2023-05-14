@@ -1,5 +1,6 @@
 #include "limiter/limiter.h"
-#include "threaddatamanager/threaddatamanager.h"
+#include "filemanager/filemanager.h"
+#include "datamanager/datamanager.h"
 
 bool Limiter::checkTimeLimitCompilation(int index){
     std::string path = "/sys/fs/cgroup/testsystemcomp";
@@ -9,14 +10,20 @@ bool Limiter::checkTimeLimitCompilation(int index){
     long long time;
 
     std::ifstream file(path.c_str());
+    if(!file.is_open()){
+        FileManager::setLogFile("./logLimiter.txt",
+            "Failed to open thread compilation "
+            "cgroup cpu.stat file.");
+        exit(1);
+    }
     do{
         file >> path;
     }while(path != "usage_usec");
     file >> time;
     file.close();
 
-    if(!ThreadDataManager::getThreadErrorCode(index))
-        ThreadDataManager::setThreadTotalTime(index, time / 1000);
+    if(!DataManager::getThreadErrorCode(index))
+        DataManager::setThreadTotalTime(index, time / 1000);
     
-    return (time / 1000) < ThreadDataManager::COMPILATION_TIME_LIMIT;
+    return (time / 1000) < DataManager::getCompilationTimeLimit();
 }

@@ -1,5 +1,6 @@
 #include "testsystem/testsystem.h"
-#include "threaddatamanager/threaddatamanager.h"
+#include "datamanager/datamanager.h"
+#include "filemanager/filemanager.h"
 
 bool TestSystem::testingLoop(int threadIndex){
     //set up paths
@@ -24,7 +25,7 @@ bool TestSystem::testingLoop(int threadIndex){
     std::string testPath;
     std::string utilityCommand;
 
-    for(int i = 0; i < ThreadDataManager::getThreadTestQuantity(threadIndex);
+    for(int i = 0; i < DataManager::getThreadTestQuantity(threadIndex);
         i++){
 
         //setTestPath
@@ -41,7 +42,7 @@ bool TestSystem::testingLoop(int threadIndex){
         }   
 
         //set test data to input.txt, clear output.txt
-        createInputAndOutputFiles(threadIndex, inputPath, outputPath);
+        FileManager::createInputAndOutputFiles(threadIndex, inputPath, outputPath);
         utilityCommand = "cp " + testPath + " " + inputPath;
         system(utilityCommand.c_str());
 
@@ -63,8 +64,8 @@ bool TestSystem::testingLoop(int threadIndex){
         close(infoPackage->pipeExec[1]);
         
         //setup user and cgroups
-        setupUser(solvePid);
-        setupCgroup(threadIndex, solvePid);
+        setupUser(threadIndex, solvePid);
+        setupCgroupSolution(threadIndex, solvePid);
 
         //pass the turn to prepared execution
         close(infoPackage->pipeSetup[1]);
@@ -74,24 +75,27 @@ bool TestSystem::testingLoop(int threadIndex){
         read(infoPackage->pipeExec[0], &tempInput, 1);
 
         //set thread information
-        ThreadDataManager::setThreadExecPid(threadIndex, solvePid);
-        ThreadDataManager::setThreadStatus(threadIndex,3);
+        DataManager::setThreadExecPid(threadIndex, solvePid);
+        DataManager::setThreadStatus(threadIndex,3);
 
         //wait for solution to end
         int status;
         if(waitpid(solvePid, &status, WUNTRACED | __WALL) == -1){
-            perror("waitpid failed");
+            FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",
+                "Failed to waitpid() for solution process.");
+            exit(1);
         }
         delete infoPackage;
 
         //update thread status
-        ThreadDataManager::setThreadExecPid(threadIndex, -1);
-        ThreadDataManager::setThreadStatus(threadIndex, 1);
+        DataManager::setThreadExecPid(threadIndex, -1);
+        DataManager::setThreadStatus(threadIndex, 1);
 
         //get the exit code
         int solveExitCode = 1004;
         if(WIFEXITED(status)){
-            solveExitCode = WEXITSTATUS(status);
+            if(!WEXITSTATUS(status))
+                solveExitCode = 0;
         }
 
         //check out of memory events
@@ -99,16 +103,16 @@ bool TestSystem::testingLoop(int threadIndex){
         cgroupPath += (char)(threadIndex + 48);
         cgroupPath += "/memory.events";
         if(!checkOutOfMemory(threadIndex, cgroupPath)){
-            ThreadDataManager::setThreadErrorCode(threadIndex, 1005);
-            ThreadDataManager::setThreadTotalMemory(threadIndex,
-                ThreadDataManager::getThreadMemoryLimit(threadIndex) + 1024);
+            DataManager::setThreadErrorCode(threadIndex, 1005);
+            DataManager::setThreadTotalMemory(threadIndex,
+                DataManager::getThreadMemoryLimit(threadIndex) + 1024);
         }
 
         //process limits/runtime errors
-        if(ThreadDataManager::getThreadErrorCode(threadIndex) !=0 ||
+        if(DataManager::getThreadErrorCode(threadIndex) !=0 ||
             solveExitCode != 0){
-            if(ThreadDataManager::getThreadErrorCode(threadIndex) == 0){
-                ThreadDataManager::setThreadErrorCode(threadIndex, solveExitCode);
+            if(DataManager::getThreadErrorCode(threadIndex) == 0){
+                DataManager::setThreadErrorCode(threadIndex, solveExitCode);
             }
             return true;
         }
@@ -124,7 +128,7 @@ bool TestSystem::testingLoop(int threadIndex){
 
         //check checker result
         if(checkerCode){
-            ThreadDataManager::setThreadErrorCode(threadIndex, checkerCode);
+            DataManager::setThreadErrorCode(threadIndex, checkerCode);
             return true;
         }
 

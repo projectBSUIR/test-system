@@ -1,10 +1,10 @@
-#include "testsystem/testsystem.h"
-#include "threaddatamanager/threaddatamanager.h"
+#include "filemanager/filemanager.h"
+#include "datamanager/datamanager.h"
 
-void TestSystem::createBaseFolders(){
+void FileManager::createBaseFolders(){
     system("mkdir -m 755 -p ./TestSystemData > /dev/null");
     std::string command;
-    for(int i = 0; i < ThreadDataManager::getMaximumThreadCount();
+    for(int i = 0; i < DataManager::getMaximumThreadCount();
         i++){
         command ="mkdir -m 755 -p ./TestSystemData/ThreadData";
         command += char(i + 48);

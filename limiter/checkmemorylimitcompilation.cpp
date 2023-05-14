@@ -1,19 +1,26 @@
 #include "limiter/limiter.h"
-#include "threaddatamanager/threaddatamanager.h"
+#include "filemanager/filemanager.h"
+#include "datamanager/datamanager.h"
 
 bool Limiter::checkMemoryLimitCompilation(int index){
     std::string path = "/sys/fs/cgroup/testsystemcomp";
     path += (char)(index + 48);
-    path += "/memory.max_usage_in_bytes";
+    path += "/memory.peak";
 
     long memory;
 
     std::ifstream file(path.c_str());
+    if(!file.is_open()){
+        FileManager::setLogFile("./logLimiter.txt",
+            "Failed to open thread compilation "
+            "cgroup memory.peak file.");
+        exit(1);
+    }
     file >> memory;
     file.close();
 
-    if(!ThreadDataManager::getThreadErrorCode(index))
-        ThreadDataManager::setThreadTotalMemory(index, memory);
+    if(!DataManager::getThreadErrorCode(index))
+        DataManager::setThreadTotalMemory(index, memory);
     
-    return memory < ThreadDataManager::COMPILATION_MEMORY_LIMIT;
+    return memory < DataManager::getCompilationMemoryLimit();
 }

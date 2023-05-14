@@ -1,6 +1,6 @@
-#include "queryhandler/queryhandler.h"
 #include "testsystem/testsystem.h"
-#include "threaddatamanager/threaddatamanager.h"
+#include "datamanager/datamanager.h"
+#include "filemanager/filemanager.h"
 
 void* TestSystem::testRoutine(void* arg){
     //delete arg dynamic memory
@@ -8,15 +8,17 @@ void* TestSystem::testRoutine(void* arg){
     int* a = (int*)arg;
     delete a;
 
-    getPropertiesAndFiles(threadIndex);
-    
+    if(!DataManager::isAutotestMode()){
+        FileManager::getTestFilesAndProperties(threadIndex);
+    }
+
     if(compileChecker(threadIndex) || compileSolution(threadIndex) ||
         testingLoop(threadIndex) || 1){
 
         prepareReport(threadIndex);
-        clearThreadDirectories(threadIndex,
-            ThreadDataManager::getThreadTestQuantity(threadIndex));
-        ThreadDataManager::setThreadStatus(threadIndex, 0);
+        FileManager::clearThreadDirectories(threadIndex,
+            DataManager::getThreadTestQuantity(threadIndex));
+        DataManager::setThreadStatus(threadIndex, 0);
         return nullptr;
     }
     return nullptr;

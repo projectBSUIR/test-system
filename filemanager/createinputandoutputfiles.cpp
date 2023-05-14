@@ -1,7 +1,7 @@
-#include "testsystem/testsystem.h"
-#include "threaddatamanager/threaddatamanager.h"
+#include "filemanager/filemanager.h"
+#include "datamanager/datamanager.h"
 
-void TestSystem::createInputAndOutputFiles(int index,
+void FileManager::createInputAndOutputFiles(int index,
     std::string& inputPath, std::string& outputPath){
     std::string tempString;
     tempString = "touch ./TestSystemData/ThreadRoot";

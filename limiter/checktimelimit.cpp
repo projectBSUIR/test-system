@@ -1,5 +1,6 @@
 #include "limiter/limiter.h"
-#include "threaddatamanager/threaddatamanager.h"
+#include "filemanager/filemanager.h"
+#include "datamanager/datamanager.h"
 
 bool Limiter::checkTimeLimit(int index){
     std::string path = "/sys/fs/cgroup/testsystem";
@@ -9,13 +10,19 @@ bool Limiter::checkTimeLimit(int index){
     long long time;
 
     std::ifstream file(path.c_str());
+    if(!file.is_open()){
+        FileManager::setLogFile("./logLimiter.txt",
+            "Failed to open thread solution "
+            "cgroup cpu.stat file.");
+        exit(1);
+    }
     do{
         file >> path;
     }while(path != "usage_usec");
     file >> time;
     file.close();
 
-    if(!ThreadDataManager::getThreadErrorCode(index))
-        ThreadDataManager::setThreadTotalTime(index, time / 1000);
-    return (time / 1000) < ThreadDataManager::getThreadTimeLimit(index);
+    if(!DataManager::getThreadErrorCode(index))
+        DataManager::setThreadTotalTime(index, time / 1000);
+    return (time / 1000) < DataManager::getThreadTimeLimit(index);
 }

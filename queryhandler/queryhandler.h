@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <iostream>
 #include <string>
-#include <sstream>//
 #include <jsoncpp/json/json.h>
 
 #include "thirdparty/HTTPRequest.hpp"
@@ -19,8 +18,10 @@ public:
     static void tryPopSubmission(int threadIndex);
     static void* queryHandlerLoop(void* arg);
     static void startQueryHandlerThread();
-    static void getPropertiesAndFilesJson(int threadIndex,
-    std::vector<uint8_t>& jsonVector,std::vector<uint8_t>& archiveVector);
+    static void getSubmissionProperties(int threadIndex,
+        std::vector<uint8_t>& jsonVector);
+    static void getTestArchive(int threadIndex,
+        std::vector<uint8_t>& archiveVector);
 };
 
 #endif

@@ -1,5 +1,4 @@
 #include "testsystem/testsystem.h"
-#include "threaddatamanager/threaddatamanager.h"
 
 int TestSystem::preparedCompilation(void* iP){
     CompilationInfoPackage* compilationInfoPackage =

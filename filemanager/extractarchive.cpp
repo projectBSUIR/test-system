@@ -1,7 +1,7 @@
-#include "threaddatamanager/threaddatamanager.h"
-#include "testsystem.h"
+#include "filemanager/filemanager.h"
+#include "datamanager/datamanager.h"
 
-void TestSystem::extractArchive(std::string path, int ind){
+void FileManager::extractArchive(std::string path, int ind){
     path = "unzip -o " + path + " -d ./TestSystemData/ThreadData";
     path += (char)(ind + 48);
     path += " > /dev/null";

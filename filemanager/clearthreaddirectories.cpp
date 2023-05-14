@@ -1,7 +1,7 @@
-#include "testsystem/testsystem.h"
-#include "threaddatamanager/threaddatamanager.h"
+#include "filemanager/filemanager.h"
+#include "datamanager/datamanager.h"
 
-void TestSystem::clearThreadDirectories(int index,int testNumber){
+void FileManager::clearThreadDirectories(int index,int testNumber){
     std::string tempString;
     for(int i = 0; i < testNumber; i++){
         tempString = "rm -f ./TestSystemData/ThreadData";

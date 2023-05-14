@@ -1,5 +1,6 @@
 #include "testsystem/testsystem.h"
-#include "threaddatamanager/threaddatamanager.h"
+#include "datamanager/datamanager.h"
+#include "filemanager/filemanager.h"
 
 bool TestSystem::compileSolution(int threadIndex){
     std::string command = "g++ -std=c++20 ./";
@@ -13,7 +14,8 @@ bool TestSystem::compileSolution(int threadIndex){
     command += "/ThreadData";
     command += (char)(threadIndex + 48);
 
-    CompilationInfoPackage* compilationInfoPackage = new CompilationInfoPackage;
+    CompilationInfoPackage* compilationInfoPackage = 
+        new CompilationInfoPackage;
     compilationInfoPackage->command = command;
     compilationInfoPackage->threadIndex = threadIndex;
     pipe(compilationInfoPackage->pipeSetup);
@@ -28,33 +30,33 @@ bool TestSystem::compileSolution(int threadIndex){
     close(compilationInfoPackage->pipeSetup[0]);
         
     //setup user and cgroups
-    setupCgroupComp(threadIndex, compPid);
+    setupCgroupCompilation(threadIndex, compPid);
 
     //pass the turn to prepared execution
     close(compilationInfoPackage->pipeSetup[1]);
 
     //set thread information
-    ThreadDataManager::setThreadExecPid(threadIndex, compPid);
-    ThreadDataManager::setThreadStatus(threadIndex, 2);
+    DataManager::setThreadExecPid(threadIndex, compPid);
+    DataManager::setThreadStatus(threadIndex, 2);
 
-    //wait for solution to end
+    //wait for compilation to end
     int status;
     if(waitpid(compPid, &status, WUNTRACED | __WALL) == -1){
-        perror("waitpid comp failed");
+        FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",
+            "Failed to waitpid() for compilation process.");
+        exit(1);
     }
     delete compilationInfoPackage;
 
     //update thread status
-    ThreadDataManager::setThreadExecPid(threadIndex, -1);
-    ThreadDataManager::setThreadStatus(threadIndex, 1);
+    DataManager::setThreadExecPid(threadIndex, -1);
+    DataManager::setThreadStatus(threadIndex, 1);
 
     int compExitCode = 1001;
     if(WIFEXITED(status)){
-        compExitCode = WEXITSTATUS(status);
-    }
-
-    if(compExitCode != 0){
-        compExitCode = 1001;
+        if(!WEXITSTATUS(status)){
+            compExitCode=0;
+        }
     }
 
     std::string cgroupPath = "/sys/fs/cgroup/testsystemcomp";
@@ -62,16 +64,16 @@ bool TestSystem::compileSolution(int threadIndex){
     cgroupPath += "/memory.events";
 
     if(!checkOutOfMemory(threadIndex, cgroupPath)){
-        ThreadDataManager::setThreadErrorCode(threadIndex, 1002);
-        ThreadDataManager::setThreadTotalMemory(threadIndex,
-            ThreadDataManager::COMPILATION_MEMORY_LIMIT + 1024);
+        DataManager::setThreadErrorCode(threadIndex, 1002);
+        DataManager::setThreadTotalMemory(threadIndex,
+            DataManager::getCompilationMemoryLimit() + 1024);
     }
 
     //process compilation errors
-    if(ThreadDataManager::getThreadErrorCode(threadIndex) !=0 ||
+    if(DataManager::getThreadErrorCode(threadIndex) !=0 ||
         compExitCode != 0){
-        if(ThreadDataManager::getThreadErrorCode(threadIndex) == 0){
-            ThreadDataManager::setThreadErrorCode(threadIndex, compExitCode);
+        if(DataManager::getThreadErrorCode(threadIndex) == 0){
+            DataManager::setThreadErrorCode(threadIndex, compExitCode);
         }
         return true;
     }

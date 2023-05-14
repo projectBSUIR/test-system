@@ -1,5 +1,4 @@
 #include "testsystem/testsystem.h"
-#include "threaddatamanager/threaddatamanager.h"
 
 int TestSystem::preparedExecution(void* iP){
     InfoPackage* infoPackage = (InfoPackage*)iP;
