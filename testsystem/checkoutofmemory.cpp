@@ -7,7 +7,8 @@ bool TestSystem::checkOutOfMemory(int threadIndex, std::string path){
 
     std::ifstream file(path.c_str());
     if(!file.is_open()){
-        FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",
+        FileManager::setLogFile("./logThread" 
+            + std::to_string(threadIndex) + ".txt",
             "Failed to open thread solution "
             "cgroup memory.events file.");
         exit(1);

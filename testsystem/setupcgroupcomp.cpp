@@ -20,7 +20,6 @@ void TestSystem::setupCgroupCompilation(int threadIndex, int solvePid){
     file << solvePid;
     file.close();
 
-    //cpu usage limit
     if(DataManager::isCpuLimiting()){
         file.open(cgroupPath + "/cpu.cfs_period_us");
         if(!file.is_open()){
@@ -43,7 +42,6 @@ void TestSystem::setupCgroupCompilation(int threadIndex, int solvePid){
         file.close();
     }
 
-    //memory limits
     file.open(cgroupPath + "/memory.max");
     if(!file.is_open()){
         FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",

@@ -25,7 +25,7 @@ void DataManager::applyConfigSettings(){
         exit(1);
     }
 
-    if(configJson.isMember("use_cpu_usage_limits")&&
+    if(configJson.isMember("use_cpu_usage_limits") &&
         configJson["use_cpu_usage_limits"].isBool()){
         cpuLimiting = configJson["use_cpu_usage_limits"].asBool();
         if(cpuLimiting){
@@ -42,7 +42,7 @@ void DataManager::applyConfigSettings(){
     }
 
 
-    if(configJson.isMember("terminal_logging")&&
+    if(configJson.isMember("terminal_logging") &&
         configJson["terminal_logging"].isBool()){
         terminalLogging = configJson["terminal_logging"].asBool();
         if(terminalLogging){
@@ -58,18 +58,18 @@ void DataManager::applyConfigSettings(){
         exit(1);
     }
 
-    if(configJson.isMember("max_worker_thread_count")&&
+    if(configJson.isMember("max_worker_thread_count") &&
         configJson["max_worker_thread_count"].isInt()){
         maximumThreadCount = configJson["max_worker_thread_count"].asInt();
-        if(maximumThreadCount<1||maximumThreadCount>5){
+        if(maximumThreadCount < 1 || maximumThreadCount > 5){
             FileManager::setLogFile("./logDataManager.txt",
                 "config.txt invalid \"max_worker_thread_count\" "
                 "field (must be 1-5).");
             exit(1);
         }
         else{
-            std::cout<<"Max thread count is set to "<<
-            maximumThreadCount<<".\n";
+            std::cout << "Max thread count is set to "<<
+            maximumThreadCount << ".\n";
         }
     }
     else{
@@ -80,11 +80,11 @@ void DataManager::applyConfigSettings(){
     }
 
     if(cpuLimiting){
-        if(configJson.isMember("max_testsystem_process_cpu_usage")&&
+        if(configJson.isMember("max_testsystem_process_cpu_usage") &&
             configJson["max_testsystem_process_cpu_usage"].isInt()){
             testsystemCpuUsage = 
                 configJson["max_testsystem_process_cpu_usage"].asInt();
-            if(testsystemCpuUsage<10||testsystemCpuUsage>100){
+            if(testsystemCpuUsage < 10||testsystemCpuUsage > 100){
                 FileManager::setLogFile("./logDataManager.txt",
                     "config.txt invalid \"max_testsystem_process_cpu_usage\" "
                     "field (must be 10-100).");
@@ -92,8 +92,8 @@ void DataManager::applyConfigSettings(){
             }
             else{
                 TestSystem::setupCgroupTestsystem(testsystemCpuUsage);
-                std::cout<<"Max testsystem cpu usage is set to "<<
-              testsystemCpuUsage<<"%.\n";
+                std::cout << "Max testsystem cpu usage is set to " <<
+              testsystemCpuUsage <<"%.\n";
            }
         }
         else{
@@ -103,19 +103,19 @@ void DataManager::applyConfigSettings(){
             exit(1);
        }
 
-        if(configJson.isMember("max_worker_process_cpu_usage")&&
+        if(configJson.isMember("max_worker_process_cpu_usage") &&
             configJson["max_worker_process_cpu_usage"].isInt()){
             workerCpuUsage = 
                 configJson["max_worker_process_cpu_usage"].asInt();
-            if(workerCpuUsage<10||workerCpuUsage>100){
+            if(workerCpuUsage < 10 || workerCpuUsage > 100){
                 FileManager::setLogFile("./logDataManager.txt",
                     "config.txt invalid \"max_worker_process_cpu_usage\" "
                     "field (must be 10-100).");
                 exit(1);
             }
             else{
-                std::cout<<"Max worker cpu usage is set to "<<
-                workerCpuUsage<<"%.\n";
+                std::cout << "Max worker cpu usage is set to " <<
+                workerCpuUsage << "%.\n";
             }
         }
         else{
@@ -126,11 +126,11 @@ void DataManager::applyConfigSettings(){
         }
     }   
 
-    if(configJson.isMember("compilation_memory_limit")&&
+    if(configJson.isMember("compilation_memory_limit") &&
         configJson["compilation_memory_limit"].isInt64()){
         compilationMemoryLimit = 
             configJson["compilation_memory_limit"].asInt64();
-        if(compilationMemoryLimit<1024){
+        if(compilationMemoryLimit < 1024){
             FileManager::setLogFile("./logDataManager.txt",
                 "config.txt invalid \"compilation_memory_limit\" "
                 "field (must be >=1024).");
@@ -138,7 +138,7 @@ void DataManager::applyConfigSettings(){
         }
         else{
             std::cout << "Compilation memory limit is set to " <<
-            compilationMemoryLimit<<".\n";
+            compilationMemoryLimit << ".\n";
         }
     }
     else{
@@ -148,11 +148,11 @@ void DataManager::applyConfigSettings(){
         exit(1);
     }
 
-    if(configJson.isMember("compilation_time_limit")&&
+    if(configJson.isMember("compilation_time_limit") &&
         configJson["compilation_time_limit"].isInt()){
         compilationTimeLimit = 
             configJson["compilation_time_limit"].asInt();
-        if(compilationTimeLimit<100){
+        if(compilationTimeLimit < 100){
             FileManager::setLogFile("./logDataManager.txt",
                 "config.txt invalid \"compilation_time_limit\" "
                 "field.");
@@ -170,7 +170,7 @@ void DataManager::applyConfigSettings(){
         exit(1);
     }
 
-    if(configJson.isMember("testsystem_login")&&
+    if(configJson.isMember("testsystem_login") &&
         configJson["testsystem_login"].isString()){
         testsystemLogin = 
             configJson["testsystem_login"].asString();
@@ -191,7 +191,7 @@ void DataManager::applyConfigSettings(){
         exit(1);
     }
 
-    if(configJson.isMember("testsystem_password")&&
+    if(configJson.isMember("testsystem_password") &&
         configJson["testsystem_password"].isString()){
         testsystemPassword = 
             configJson["testsystem_password"].asString();
@@ -212,7 +212,7 @@ void DataManager::applyConfigSettings(){
         exit(1);
     }
 
-    if(configJson.isMember("server_url")&&
+    if(configJson.isMember("server_url") &&
         configJson["server_url"].isString()){
         serverUrl = 
             configJson["server_url"].asString();
@@ -234,7 +234,7 @@ void DataManager::applyConfigSettings(){
         exit(1);
     }
 
-    if(configJson.isMember("extract_submission_rout")&&
+    if(configJson.isMember("extract_submission_rout") &&
         configJson["extract_submission_rout"].isString()){
         extractSubmissionRout = 
             configJson["extract_submission_rout"].asString();
@@ -256,7 +256,7 @@ void DataManager::applyConfigSettings(){
         exit(1);
     }
 
-    if(configJson.isMember("set_verdict_rout")&&
+    if(configJson.isMember("set_verdict_rout") &&
         configJson["set_verdict_rout"].isString()){
         setVerdictRout = 
             configJson["set_verdict_rout"].asString();
@@ -278,7 +278,7 @@ void DataManager::applyConfigSettings(){
         exit(1);
     }
 
-    if(configJson.isMember("extract_testing_files_rout")&&
+    if(configJson.isMember("extract_testing_files_rout") &&
         configJson["extract_testing_files_rout"].isString()){
         extractTestingFilesRout = 
             configJson["extract_testing_files_rout"].asString();
@@ -300,7 +300,7 @@ void DataManager::applyConfigSettings(){
         exit(1);
     }
 
-    if(configJson.isMember("extract_problem_tests_rout")&&
+    if(configJson.isMember("extract_problem_tests_rout") &&
         configJson["extract_problem_tests_rout"].isString()){
         extractProblemTestsRout = 
             configJson["extract_problem_tests_rout"].asString();

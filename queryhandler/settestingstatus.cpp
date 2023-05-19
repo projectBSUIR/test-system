@@ -2,14 +2,12 @@
 #include "datamanager/datamanager.h"
 
 void QueryHandler::setTestingStatus(std::string json){
-    //parse submission info to json
     Json::Value submissionInfoRoot;
     Json::Reader reader;
     reader.parse(
         json,
         submissionInfoRoot);
 
-    //create input json
     Json::Value inputRoot;
     inputRoot["login"] = DataManager::getTestsystemLogin();
     inputRoot["password"] = DataManager::getTestsystemPassword();
@@ -30,9 +28,9 @@ void QueryHandler::setTestingStatus(std::string json){
             inputJson,{{"Content-Type", "application/json"}});
         if(response.status.code != 200){
             if(DataManager::isTerminalLogging()){
-                std::cout<< "Set test status failed..."<<"\n";
-                std::cout<< std::string(response.body.begin(),
-                    response.body.end())<<"\n";
+                std::cout << "Set test status failed..." << "\n";
+                std::cout << std::string(response.body.begin(),
+                    response.body.end()) << "\n";
             }
             usleep(3000000);
         }

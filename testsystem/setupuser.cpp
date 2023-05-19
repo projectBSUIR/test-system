@@ -30,7 +30,7 @@ void TestSystem::setupUser(int index, int solvePid){
 
     tempString = procPath + "/gid_map";
     file.open(tempString.c_str());
-        if(!file.is_open()){
+    if(!file.is_open()){
         FileManager::setLogFile("./logThread" + std::to_string(index) + ".txt",
             "Failed to open thread proc "
             "gid_map file.");

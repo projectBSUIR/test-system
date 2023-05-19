@@ -3,7 +3,6 @@
 #include "datamanager/datamanager.h"
 
 void FileManager::getTestFilesAndProperties(int threadIndex){
-    //extract tests
     std::vector<uint8_t> archiveVector;
     QueryHandler::getTestArchive(threadIndex, archiveVector);
 
@@ -11,8 +10,15 @@ void FileManager::getTestFilesAndProperties(int threadIndex){
         archiveVector.size(), 0, NULL);
 
     zip* z = zip_open_from_source(src, 0, NULL);
+
+    if(z == NULL){
+        FileManager::setLogFile("./logThread" 
+            + std::to_string(threadIndex) + ".txt",
+            "Failed open archive with logs.");
+        exit(1);
+    }
     
-    int testCount = zip_get_num_entries(z,0)/2;
+    int testCount = zip_get_num_entries(z, 0) / 2;
 
     std::ofstream file;
 
@@ -75,50 +81,44 @@ void FileManager::getTestFilesAndProperties(int threadIndex){
 
     zip_close(z);
 
-    //extract properties and solution files
     std::vector<uint8_t> solutionDecoded;
     std::vector<uint8_t> checkerDecoded;
     std::vector<uint8_t> jsonVector;
 
     QueryHandler::getSubmissionProperties(threadIndex, jsonVector);
 
-    //read json
     Json::Value root;
     Json::Reader reader;
     reader.parse(reinterpret_cast<const char*>(jsonVector.data()),
         reinterpret_cast<const char*>(jsonVector.data())
         + jsonVector.size(),root,false);
         
-    //write limits
     DataManager::setThreadMemoryLimit(threadIndex, 
         (root)["problem_properties"]["memoryLimit"].asInt64());
     DataManager::setThreadTimeLimit(threadIndex,
         (root)["problem_properties"]["timeLimit"].asInt64());
-    DataManager::setThreadTestQuantity(threadIndex,testCount);
+    DataManager::setThreadTestQuantity(threadIndex, testCount);
 
-        //decode strings
     decodeBase64(root["solution"].asString(), solutionDecoded);
     decodeBase64(root["checker"].asString(), checkerDecoded);
 
-    //create solution.cpp
     std::string path = "./TestSystemData/ThreadData";
     path += (char)(threadIndex + 48);
     path += "/solution.cpp";
 
-    file.open(path, std::ios::out|std::ios::binary);
-    for(int i=0;i<solutionDecoded.size();i++){
-        file<<solutionDecoded[i];
+    file.open(path, std::ios::out | std::ios::binary);
+    for(int i=0; i<solutionDecoded.size(); i++){
+        file << solutionDecoded[i];
     }
     file.close();
 
-    //create check.cpp
     path = "./TestSystemData/ThreadData";
     path += (char)(threadIndex + 48);
     path += "/check.cpp";
 
-    file.open(path, std::ios::out|std::ios::binary);
-    for(int i=0;i<checkerDecoded.size();i++){
-        file<<checkerDecoded[i];
+    file.open(path, std::ios::out | std::ios::binary);
+    for(int i=0; i < checkerDecoded.size(); i++){
+        file << checkerDecoded[i];
     }
     file.close();
 

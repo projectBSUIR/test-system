@@ -10,7 +10,8 @@ bool TestSystem::compileChecker(int threadIndex){
     command += "/checker -I ./TestSystemData";
     int status = system(command.c_str());
     if(WEXITSTATUS(status)){
-        FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",
+        FileManager::setLogFile("./logThread" 
+            + std::to_string(threadIndex) + ".txt",
             "Failed to compile checker.");
         exit(1);
     }

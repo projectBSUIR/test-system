@@ -73,72 +73,72 @@ int main(){
     verdict = "";
     std::getline(file,verdict);
     if(verdict == "CE"){
-        std::cout<<"\033[1;32mRight verdict\033[0m";
+        std::cout << "\033[1;32mRight verdict\033[0m";
     }
     else{
-        std::cout<<"\033[1;31mRight verdict\033[0m";
+        std::cout << "\033[1;31mWrong verdict\033[0m";
     }
-    std::cout<<" : Compilation Error test got "<<verdict<< " verdict.\n";
+    std::cout << " : Compilation Error test got "<< verdict << " verdict.\n";
 
     verdict = "";
     std::getline(file,verdict);
     if(verdict == "TL"){
-        std::cout<<"\033[1;32mRight verdict\033[0m";
+        std::cout << "\033[1;32mRight verdict\033[0m";
     }
     else{
-        std::cout<<"\033[1;31mRight verdict\033[0m";
+        std::cout << "\033[1;31mWrong verdict\033[0m";
     }
-    std::cout<<" : Time limit test got "<<verdict<< " verdict.\n";
+    std::cout << " : Time limit test got "<< verdict << " verdict.\n";
 
     verdict = "";
     std::getline(file,verdict);
     if(verdict == "ML"){
-        std::cout<<"\033[1;32mRight verdict\033[0m";
+        std::cout << "\033[1;32mRight verdict\033[0m";
     }
     else{
-        std::cout<<"\033[1;31mRight verdict\033[0m";
+        std::cout << "\033[1;31mWrong verdict\033[0m";
     }
-    std::cout<<" : Memory Limit test got "<<verdict<< " verdict.\n";
+    std::cout << " : Memory Limit test got "<< verdict << " verdict.\n";
 
     verdict = "";
     std::getline(file,verdict);
     if(verdict == "OK"){
-        std::cout<<"\033[1;32mRight verdict\033[0m";
+        std::cout << "\033[1;32mRight verdict\033[0m";
     }
     else{
-        std::cout<<"\033[1;31mRight verdict\033[0m";
+        std::cout << "\033[1;31mWrong verdict\033[0m";
     }
-    std::cout<<" : OK test got "<<verdict<< " verdict.\n";
+    std::cout << " : OK test got " << verdict << " verdict.\n";
 
     verdict = "";
     std::getline(file,verdict);
     if(verdict == "WA"){
-        std::cout<<"\033[1;32mRight verdict\033[0m";
+        std::cout << "\033[1;32mRight verdict\033[0m";
     }
     else{
-        std::cout<<"\033[1;31mRight verdict\033[0m";
+        std::cout << "\033[1;31mWrong verdict\033[0m";
     }
-    std::cout<<" : Wrong Answer test got "<<verdict<< " verdict.\n";
+    std::cout << " : Wrong Answer test got "<< verdict << " verdict.\n";
 
     verdict = "";
     std::getline(file,verdict);
     if(verdict == "TL" || verdict == "ML"){
-        std::cout<<"\033[1;32mRight verdict\033[0m";
+        std::cout << "\033[1;32mRight verdict\033[0m";
     }
     else{
-        std::cout<<"\033[1;31mRight verdict\033[0m";
+        std::cout << "\033[1;31mWrong verdict\033[0m";
     }
-    std::cout<<" : Fork bomb test got "<<verdict<< " verdict.\n";
+    std::cout << " : Fork bomb test got "<< verdict << " verdict.\n";
 
     verdict = "";
     std::getline(file,verdict);
     if(verdict == "RE"){
-        std::cout<<"\033[1;32mRight verdict\033[0m";
+        std::cout << "\033[1;32mRight verdict\033[0m";
     }
     else{
-        std::cout<<"\033[1;31mRight verdict\033[0m";
+        std::cout << "\033[1;31mWrong verdict\033[0m";
     }
-    std::cout<<" : Runtime Error test got "<<verdict<< " verdict.\n";
+    std::cout << " : Runtime Error test got " << verdict << " verdict.\n";
 
     file.close();
     return 0;

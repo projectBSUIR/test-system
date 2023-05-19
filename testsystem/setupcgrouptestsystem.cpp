@@ -15,7 +15,6 @@ void TestSystem::setupCgroupTestsystem(int cpuProc){
     file << getpid();
     file.close();
 
-    //cpu usage limit 
     file.open("/sys/fs/cgroup/testsystemmain/cpu.cfs_period_us");
     if(!file.is_open()){
         FileManager::setLogFile("./logThread0.txt",

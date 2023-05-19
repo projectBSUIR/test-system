@@ -20,35 +20,29 @@ bool TestSystem::compileSolution(int threadIndex){
     compilationInfoPackage->threadIndex = threadIndex;
     pipe(compilationInfoPackage->pipeSetup);
 
-    //allocate stack and launch prepared execution as child process
     char* compStack = new char[8096];
     int compPid = clone(preparedCompilation, compStack + 8096, 0,
         compilationInfoPackage);
     delete[] compStack;
 
-    //close unused ends of the pipes
     close(compilationInfoPackage->pipeSetup[0]);
         
-    //setup user and cgroups
     setupCgroupCompilation(threadIndex, compPid);
 
-    //pass the turn to prepared execution
     close(compilationInfoPackage->pipeSetup[1]);
 
-    //set thread information
     DataManager::setThreadExecPid(threadIndex, compPid);
     DataManager::setThreadStatus(threadIndex, 2);
 
-    //wait for compilation to end
     int status;
     if(waitpid(compPid, &status, WUNTRACED | __WALL) == -1){
-        FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",
+        FileManager::setLogFile("./logThread" 
+            + std::to_string(threadIndex) + ".txt",
             "Failed to waitpid() for compilation process.");
         exit(1);
     }
     delete compilationInfoPackage;
 
-    //update thread status
     DataManager::setThreadExecPid(threadIndex, -1);
     DataManager::setThreadStatus(threadIndex, 1);
 
@@ -69,7 +63,6 @@ bool TestSystem::compileSolution(int threadIndex){
             DataManager::getCompilationMemoryLimit() + 1024);
     }
 
-    //process compilation errors
     if(DataManager::getThreadErrorCode(threadIndex) !=0 ||
         compExitCode != 0){
         if(DataManager::getThreadErrorCode(threadIndex) == 0){

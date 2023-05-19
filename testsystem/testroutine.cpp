@@ -3,7 +3,6 @@
 #include "filemanager/filemanager.h"
 
 void* TestSystem::testRoutine(void* arg){
-    //delete arg dynamic memory
     int threadIndex = *(int*)arg;
     int* a = (int*)arg;
     delete a;

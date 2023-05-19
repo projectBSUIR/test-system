@@ -14,7 +14,6 @@ void QueryHandler::tryPopSubmission(int threadIndex){
     const auto response = request.send("GET",inputJson,
         {{"Content-Type", "application/json"}});
 
-    //get output
     std::string outputJson = std::string(response.body.begin(),
         response.body.end());
     

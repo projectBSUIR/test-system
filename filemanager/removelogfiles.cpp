@@ -16,7 +16,7 @@ void FileManager::removeLogFiles(){
     utilityCommand = "rm ./logQueryHandler.txt > /dev/null 2>&1";
     system(utilityCommand.c_str());
 
-    for(int i=0;i<5;i++){
+    for(int i=0; i<5; i++){
         utilityCommand = "rm ./logThread";
         utilityCommand += std::to_string(i);
         utilityCommand += ".txt > /dev/null 2>&1";

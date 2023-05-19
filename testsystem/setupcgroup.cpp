@@ -12,7 +12,8 @@ void TestSystem::setupCgroupSolution(int threadIndex, int solvePid){
     std::string tempString = cgroupPath + "/cgroup.procs";
     std::ofstream file(tempString.c_str());
     if(!file.is_open()){
-        FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",
+        FileManager::setLogFile("./logThread" 
+            + std::to_string(threadIndex) + ".txt",
             "Failed to open thread solution "
             "cgroup.procs file.");
         exit(1);
@@ -20,11 +21,11 @@ void TestSystem::setupCgroupSolution(int threadIndex, int solvePid){
     file << solvePid;
     file.close();
 
-    //cpu usage limits
     if(DataManager::isCpuLimiting()){
         file.open(cgroupPath + "/cpu.cfs_period_us");
         if(!file.is_open()){
-            FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",
+            FileManager::setLogFile("./logThread" 
+                + std::to_string(threadIndex) + ".txt",
                 "Failed to open thread solution "
                 "cgroup.cfs_period_us file.");
             exit(1);
@@ -34,7 +35,8 @@ void TestSystem::setupCgroupSolution(int threadIndex, int solvePid){
 
         file.open(cgroupPath + "/cpu.cfs_quota_us");
         if(!file.is_open()){
-            FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",
+            FileManager::setLogFile("./logThread" 
+                + std::to_string(threadIndex) + ".txt",
                 "Failed to open thread solution "
                 "cgroup.cfs_quota_us file.");
             exit(1);
@@ -43,10 +45,10 @@ void TestSystem::setupCgroupSolution(int threadIndex, int solvePid){
         file.close();
     }
 
-    //memory limit
     file.open(cgroupPath + "/memory.max");
     if(!file.is_open()){
-        FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",
+        FileManager::setLogFile("./logThread" 
+            + std::to_string(threadIndex) + ".txt",
             "Failed to open thread solution "
             "cgroup memory.max file.");
         exit(1);
@@ -57,7 +59,8 @@ void TestSystem::setupCgroupSolution(int threadIndex, int solvePid){
     tempString = cgroupPath + "/memory.swap.max";
     file.open(tempString.c_str());
     if(!file.is_open()){
-        FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",
+        FileManager::setLogFile("./logThread" 
+            + std::to_string(threadIndex) + ".txt",
             "Failed to open thread solution "
             "cgroup memory.swap.max file.");
         exit(1);
@@ -65,11 +68,11 @@ void TestSystem::setupCgroupSolution(int threadIndex, int solvePid){
     file << 0;
     file.close();
 
-    //child processes limit
     tempString = cgroupPath + "/pids.max";
     file.open(tempString.c_str());
     if(!file.is_open()){
-        FileManager::setLogFile("./logThread" + std::to_string(threadIndex) + ".txt",
+        FileManager::setLogFile("./logThread" 
+            + std::to_string(threadIndex) + ".txt",
             "Failed to open thread solution "
             "cgroup pids.max file.");
         exit(1);

@@ -43,7 +43,7 @@ void TestSystem::prepareReport(int index){
         std::cout << "Thread " << index << ", ec = ";
         std::cout << DataManager::getThreadErrorCode(index);
         std::cout << '\n';
-        std::cout << "Verdict - " << verdict<<"\n";
+        std::cout << "Verdict - " << verdict <<"\n";
     }
 
     if(!DataManager::isAutotestMode()){

@@ -4,14 +4,12 @@
 void QueryHandler::getSubmissionProperties(int threadIndex,
     std::vector<uint8_t>& jsonVector){
 
-    //parse submission info to json
     Json::Value submissionInfoRoot;
     Json::Reader reader;
     reader.parse(
         DataManager::getThreadSubmissionInfo(threadIndex),
         submissionInfoRoot);
 
-    //create input json
     Json::Value inputRoot;
     inputRoot["login"] = DataManager::getTestsystemLogin();
     inputRoot["password"] = DataManager::getTestsystemPassword();
@@ -35,7 +33,7 @@ void QueryHandler::getSubmissionProperties(int threadIndex,
             if(DataManager::isTerminalLogging()){
                 std::cout << "Testing files request failed, trying again...\n";
                 std::cout << std::string(response.body.begin(),
-                    response.body.end())<<"\n";
+                    response.body.end()) << "\n";
             }
             usleep(3000000);
         }

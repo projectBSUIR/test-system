@@ -2,20 +2,17 @@
 #include "datamanager/datamanager.h"
 
 void QueryHandler::sendVerdict(std::string verdict, int threadIndex){
-    //parse submission info to json
     Json::Value submissionInfoRoot;
     Json::Reader reader;
     reader.parse(
         DataManager::getThreadSubmissionInfo(threadIndex),
         submissionInfoRoot);
 
-    //parse verdict
     Json::Value verdictRoot;
     reader.parse(
         verdict,
         verdictRoot);
 
-    //create input json
     Json::Value inputRoot;
     inputRoot["login"] = DataManager::getTestsystemLogin();
     inputRoot["password"] = DataManager::getTestsystemPassword();
@@ -27,7 +24,6 @@ void QueryHandler::sendVerdict(std::string verdict, int threadIndex){
     Json::StyledWriter writer;
     std::string inputJson = writer.write(inputRoot);
 
-    //request
     do{
         http::Request request{DataManager::getServerUrl() + 
             DataManager::getSetVerdictRout()};
@@ -35,9 +31,9 @@ void QueryHandler::sendVerdict(std::string verdict, int threadIndex){
             inputJson,{{"Content-Type", "application/json"}});
         if(response.status.code != 200){
             if(DataManager::isTerminalLogging()){
-                std::cout<< "Set verdict request failed..."<<"\n";
-                std::cout<< std::string(response.body.begin(),
-                    response.body.end())<<"\n";
+                std::cout << "Set verdict request failed..." << "\n";
+                std::cout << std::string(response.body.begin(),
+                    response.body.end()) << "\n";
             }
             usleep(3000000);
         }

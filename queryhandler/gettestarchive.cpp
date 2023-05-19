@@ -4,14 +4,12 @@
 void QueryHandler::getTestArchive(int threadIndex,
     std::vector<uint8_t>& archiveVector){
 
-    //parse submission info to json
     Json::Value submissionInfoRoot;
     Json::Reader reader;
     reader.parse(
         DataManager::getThreadSubmissionInfo(threadIndex),
         submissionInfoRoot);
 
-    //create input json
     Json::Value inputRoot;
     inputRoot["login"] = DataManager::getTestsystemLogin();
     inputRoot["password"] = DataManager::getTestsystemPassword();
@@ -35,7 +33,7 @@ void QueryHandler::getTestArchive(int threadIndex,
             if(DataManager::isTerminalLogging()){
                 std::cout << "Problem tests request failed, trying again...\n";
                 std::cout << std::string(response.body.begin(),
-                    response.body.end())<<"\n";
+                    response.body.end()) << "\n";
             }
             usleep(3000000);
         }
