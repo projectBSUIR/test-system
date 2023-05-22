@@ -50,3 +50,7 @@ void DataManager::setAutotestMode(bool newValue){
     autotestMode = newValue;
     terminalLogging = false;
 }
+
+void DataManager::setThreadStartRealTime(int index, time_t newValue){
+    threadStartRealTime[index] = newValue;
+}

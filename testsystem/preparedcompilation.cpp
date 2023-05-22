@@ -14,6 +14,7 @@ int TestSystem::preparedCompilation(void* iP){
     char tempInput;
     read(compilationInfoPackage->pipeSetup[0],
         &tempInput,1);
+    close(compilationInfoPackage->pipeSetup[0]);
 
     execl("/bin/sh", "sh", "-c",
         compilationInfoPackage->command.c_str(), NULL);

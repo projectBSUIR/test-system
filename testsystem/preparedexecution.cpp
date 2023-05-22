@@ -8,6 +8,7 @@ int TestSystem::preparedExecution(void* iP){
     
     char tempInput;
     read(infoPackage->pipeSetup[0], &tempInput, 1);
+    close(infoPackage->pipeSetup[0]);
 
     unshare(CLONE_NEWCGROUP);
 
@@ -31,10 +32,13 @@ int TestSystem::preparedExecution(void* iP){
 
     int inputFD = open("input.txt", O_RDONLY);
     int outputFD = open("output.txt", O_WRONLY);
+    int devNull = open("/dev/null", O_WRONLY);
     dup2(inputFD, STDIN_FILENO);
     dup2(outputFD, STDOUT_FILENO);
+    dup2(devNull, STDERR_FILENO);
     close(inputFD);
     close(outputFD);
+    close(devNull);
 
     close(infoPackage->pipeExec[1]);
     

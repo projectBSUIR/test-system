@@ -65,8 +65,10 @@ bool TestSystem::testingLoop(int threadIndex){
 
         char tempInput;
         read(infoPackage->pipeExec[0], &tempInput, 1);
+        close(infoPackage->pipeExec[0]);
 
         DataManager::setThreadExecPid(threadIndex, solvePid);
+        DataManager::setThreadStartRealTime(threadIndex, std::time(nullptr));
         DataManager::setThreadStatus(threadIndex,3);
 
         int status;

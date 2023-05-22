@@ -108,3 +108,7 @@ std::string DataManager::getExtractTestingFilesRout(){
 std::string DataManager::getExtractProblemTestsRout(){
     return extractProblemTestsRout;
 }
+
+time_t DataManager::getThreadStartRealTime(int index){
+    return threadStartRealTime[index];
+}

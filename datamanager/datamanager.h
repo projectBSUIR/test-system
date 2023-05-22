@@ -3,6 +3,7 @@
 
 #include <pthread.h>
 #include <string>
+#include <ctime>
 #include <streambuf>
 #include <jsoncpp/json/json.h>
 
@@ -23,6 +24,7 @@ private:
 
     static long threadTotalMemory[5];
     static long threadTotalTime[5];
+    static time_t threadStartRealTime[5];
 
     static long long compilationMemoryLimit;
     static long long compilationTimeLimit;
@@ -64,6 +66,7 @@ public:
     static int getMaximumThreadCount();
     static long getThreadTotalMemory(int index);
     static long getThreadTotalTime(int index);
+    static time_t getThreadStartRealTime(int index);
     static std::string getThreadSubmissionInfo(int index);
     static long long getCompilationMemoryLimit();
     static long long getCompilationTimeLimit();
@@ -89,6 +92,7 @@ public:
     static void setMaximumThreadCount(int newValue);
     static void setThreadTotalMemory(int index,long newValue);
     static void setThreadTotalTime(int index, long newValue);
+    static void setThreadStartRealTime(int index, time_t newValue);
     static void setThreadSubmissionInfo(int index, std::string newValue);
 };
 

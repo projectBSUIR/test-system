@@ -22,6 +22,14 @@ bool Limiter::checkTimeLimit(int index){
     file >> time;
     file.close();
 
+    if((std::time(nullptr) - DataManager::getThreadStartRealTime(index) >= 
+        ((DataManager::getThreadTimeLimit(index) + 999) / 1000) * 3)){
+        if(!DataManager::getThreadErrorCode(index))
+            DataManager::setThreadTotalTime(index, 
+                DataManager::getThreadTimeLimit(index));
+        return false;
+    }
+
     if(!DataManager::getThreadErrorCode(index))
         DataManager::setThreadTotalTime(index, time / 1000);
     return (time / 1000) < DataManager::getThreadTimeLimit(index);

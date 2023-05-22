@@ -17,6 +17,7 @@ long long DataManager::compilationTimeLimit;
 
 long DataManager::threadTotalMemory[5]{};
 long DataManager::threadTotalTime[5]{};
+time_t DataManager::threadStartRealTime[5];
 
 int DataManager::maximumThreadCount;
 
